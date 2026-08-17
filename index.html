@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Akshay — Digital Marketer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #080808;
+    --bg2: #111111;
+    --bg3: #1a1a1a;
+    --gold: #E8A930;
+    --gold-dim: rgba(232,169,48,0.15);
+    --gold-border: rgba(232,169,48,0.3);
+    --text: #F0EDE6;
+    --muted: #888880;
+    --border: rgba(255,255,255,0.07);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.25rem 3rem;
+    border-bottom: 1px solid var(--border);
+    background: rgba(8,8,8,0.85);
+    backdrop-filter: blur(14px);
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 1.1rem;
+    color: var(--text); text-decoration: none;
+    letter-spacing: -0.02em;
+  }
+  .nav-logo span { color: var(--gold); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    color: var(--muted); text-decoration: none;
+    font-size: 0.85rem; letter-spacing: 0.04em; text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 0 3rem;
+    position: relative; overflow: hidden;
+  }
+  .hero-grid-bg {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(232,169,48,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(232,169,48,0.04) 1px, transparent 1px);
+    background-size: 80px 80px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
+  }
+  .hero-glow {
+    position: absolute; top: 20%; left: -15%;
+    width: 700px; height: 700px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,169,48,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-inner {
+    position: relative; max-width: 1100px; margin: 0 auto; width: 100%;
+    padding-top: 6rem;
+  }
+  .hero-tag {
+    display: inline-block;
+    background: var(--gold-dim); border: 1px solid var(--gold-border);
+    color: var(--gold); font-size: 0.75rem; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 0.4rem 1rem; border-radius: 100px;
+    margin-bottom: 2rem;
+    opacity: 0; animation: fadeUp 0.6s 0.2s forwards;
+  }
+  .hero-name {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(3.5rem, 8vw, 7rem);
+    font-weight: 800; line-height: 0.95;
+    letter-spacing: -0.04em; color: var(--text);
+    margin-bottom: 1.5rem;
+    opacity: 0; animation: fadeUp 0.7s 0.4s forwards;
+  }
+  .hero-name em {
+    font-style: normal; color: var(--gold);
+    display: block;
+  }
+  .hero-desc {
+    max-width: 520px;
+    font-size: 1.05rem; color: var(--muted); line-height: 1.8;
+    margin-bottom: 3rem;
+    opacity: 0; animation: fadeUp 0.7s 0.6s forwards;
+  }
+  .hero-stats {
+    display: flex; gap: 3rem; flex-wrap: wrap;
+    opacity: 0; animation: fadeUp 0.7s 0.8s forwards;
+  }
+  .stat-item {}
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem; font-weight: 700;
+    color: var(--gold); display: block;
+  }
+  .stat-label { font-size: 0.8rem; color: var(--muted); letter-spacing: 0.03em; }
+  .hero-scroll {
+    position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    color: var(--muted); font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase;
+    opacity: 0; animation: fadeIn 1s 1.5s forwards;
+  }
+  .scroll-line {
+    width: 1px; height: 40px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollPulse 1.8s ease-in-out infinite;
+  }
+
+  /* ── SECTIONS ── */
+  section { padding: 7rem 3rem; }
+  .section-inner { max-width: 1100px; margin: 0 auto; }
+  .section-label {
+    font-size: 0.72rem; color: var(--gold);
+    letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500;
+    display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem;
+  }
+  .section-label::before {
+    content: ''; display: block;
+    width: 28px; height: 1px; background: var(--gold);
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700; letter-spacing: -0.03em;
+    line-height: 1.1; color: var(--text);
+    margin-bottom: 1rem;
+  }
+  .section-sub { font-size: 1rem; color: var(--muted); max-width: 560px; }
+
+  /* ── SKILLS ── */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem; margin-top: 3.5rem;
+  }
+  .skill-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px; padding: 1.75rem;
+    transition: border-color 0.25s, transform 0.25s;
+    position: relative; overflow: hidden;
+  }
+  .skill-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.3s;
+  }
+  .skill-card:hover { border-color: var(--gold-border); transform: translateY(-4px); }
+  .skill-card:hover::before { transform: scaleX(1); }
+  .skill-icon {
+    font-size: 1.5rem; margin-bottom: 1rem;
+    width: 44px; height: 44px;
+    background: var(--gold-dim); border: 1px solid var(--gold-border);
+    border-radius: 10px; display: flex; align-items: center; justify-content: center;
+  }
+  .skill-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem; font-weight: 700; color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+  .skill-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+
+  /* ── DIVIDER ── */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0 3rem;
+  }
+
+  /* ── SEO CASES ── */
+  .cases-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.25rem; margin-top: 3.5rem;
+  }
+  .case-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 14px; padding: 2rem;
+    position: relative; overflow: hidden;
+    transition: border-color 0.25s, transform 0.25s;
+  }
+  .case-card:hover { border-color: var(--gold-border); transform: translateY(-3px); }
+  .case-number {
+    font-family: 'Syne', sans-serif;
+    font-size: 4rem; font-weight: 800;
+    color: rgba(232,169,48,0.08); line-height: 1;
+    position: absolute; top: 1.25rem; right: 1.5rem;
+  }
+  .case-client {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.15rem; font-weight: 700; color: var(--text);
+    margin-bottom: 0.25rem;
+  }
+  .case-url { font-size: 0.78rem; color: var(--gold); margin-bottom: 1rem; }
+  .case-row {
+    display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem;
+  }
+  .tag {
+    font-size: 0.72rem; padding: 0.3rem 0.7rem; border-radius: 100px;
+    background: var(--bg3); border: 1px solid var(--border);
+    color: var(--muted); letter-spacing: 0.02em;
+  }
+  .tag.gold { background: var(--gold-dim); border-color: var(--gold-border); color: var(--gold); }
+  .case-result {
+    background: var(--bg3); border-radius: 8px;
+    padding: 0.75rem 1rem; margin-top: 1rem;
+    font-size: 0.88rem; color: var(--text);
+    border-left: 2px solid var(--gold);
+  }
+
+  /* ── ADS PERFORMANCE ── */
+  .ads-section { background: var(--bg2); }
+  .ads-overview {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1px; background: var(--border);
+    border: 1px solid var(--border); border-radius: 14px;
+    overflow: hidden; margin: 3.5rem 0 3rem;
+  }
+  .overview-stat {
+    background: var(--bg2); padding: 2rem 1.75rem;
+    text-align: center;
+  }
+  .overview-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.25rem; font-weight: 800;
+    color: var(--gold); display: block; line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+  .overview-label { font-size: 0.82rem; color: var(--muted); }
+
+  .campaigns-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.25rem;
+  }
+  .campaign-card {
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 14px; padding: 1.75rem;
+    transition: border-color 0.25s;
+  }
+  .campaign-card:hover { border-color: var(--gold-border); }
+  .campaign-obj {
+    font-size: 0.72rem; color: var(--gold);
+    letter-spacing: 0.1em; text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .campaign-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem; font-weight: 700; color: var(--text);
+    margin-bottom: 1.25rem; line-height: 1.3;
+  }
+  .campaign-metrics { display: flex; flex-direction: column; gap: 0.6rem; }
+  .metric-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0.5rem 0; border-bottom: 1px solid var(--border);
+    font-size: 0.87rem;
+  }
+  .metric-row:last-child { border-bottom: none; }
+  .metric-key { color: var(--muted); }
+  .metric-val { color: var(--text); font-weight: 500; }
+  .metric-val.gold { color: var(--gold); }
+  .campaign-insight {
+    margin-top: 1.25rem; padding: 0.75rem 1rem;
+    background: var(--gold-dim); border-radius: 8px;
+    font-size: 0.82rem; color: var(--gold);
+    border: 1px solid var(--gold-border);
+  }
+
+  /* ── SMM ── */
+  .smm-showcase {
+    display: grid; grid-template-columns: 1.2fr 1fr; gap: 2.5rem;
+    align-items: center; margin-top: 3.5rem;
+  }
+  .smm-info {}
+  .smm-client {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem; font-weight: 700; color: var(--text);
+    margin-bottom: 0.25rem;
+  }
+  .smm-location { font-size: 0.88rem; color: var(--muted); margin-bottom: 1.25rem; }
+  .smm-desc { font-size: 0.95rem; color: var(--muted); line-height: 1.8; margin-bottom: 1.75rem; }
+  .smm-tasks { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 2rem; }
+  .task-item {
+    display: flex; align-items: center; gap: 0.75rem;
+    font-size: 0.88rem; color: var(--text);
+  }
+  .task-item::before {
+    content: '';
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--gold); flex-shrink: 0;
+  }
+  .smm-stats {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+    background: var(--border); border: 1px solid var(--border);
+    border-radius: 14px; overflow: hidden;
+  }
+  .smm-stat {
+    background: var(--bg2); padding: 1.5rem;
+    text-align: center;
+  }
+  .smm-stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem; font-weight: 800;
+    color: var(--gold); display: block;
+  }
+  .smm-stat-label { font-size: 0.78rem; color: var(--muted); }
+  .smm-stat-platform { font-size: 0.68rem; color: var(--border); margin-top: 0.2rem; }
+
+  /* ── CONTACT ── */
+  .contact-inner {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+  }
+  .contact-cta {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.75rem);
+    font-weight: 700; line-height: 1.15;
+    letter-spacing: -0.03em; color: var(--text);
+    margin-bottom: 1.25rem;
+  }
+  .contact-cta em { font-style: normal; color: var(--gold); }
+  .contact-body { font-size: 0.95rem; color: var(--muted); line-height: 1.8; }
+  .contact-links { display: flex; flex-direction: column; gap: 1rem; }
+  .contact-link {
+    display: flex; align-items: center; gap: 1rem;
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1.25rem 1.5rem;
+    text-decoration: none; transition: border-color 0.2s, transform 0.2s;
+  }
+  .contact-link:hover { border-color: var(--gold-border); transform: translateX(4px); }
+  .contact-link-icon {
+    width: 42px; height: 42px; border-radius: 10px;
+    background: var(--gold-dim); border: 1px solid var(--gold-border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; flex-shrink: 0;
+  }
+  .contact-link-text {}
+  .contact-link-label { font-size: 0.75rem; color: var(--muted); }
+  .contact-link-val { font-size: 0.95rem; color: var(--text); font-weight: 500; }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 3rem;
+    display: flex; justify-content: space-between; align-items: center;
+    color: var(--muted); font-size: 0.8rem;
+    flex-wrap: wrap; gap: 1rem;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.4; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(1.2); }
+  }
+
+  .reveal {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+  }
+  .reveal.visible {
+    opacity: 1; transform: translateY(0);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 1.1rem 1.5rem; }
+    .nav-links { display: none; }
+    section { padding: 5rem 1.5rem; }
+    .divider { margin: 0 1.5rem; }
+    .hero { padding: 0 1.5rem; }
+    .smm-showcase { grid-template-columns: 1fr; }
+    .contact-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+    footer { padding: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">AK<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#seo">SEO</a></li>
+    <li><a href="#ads">Paid Ads</a></li>
+    <li><a href="#smm">Social</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <span class="hero-tag">Digital Marketer · Calicut, Kerala</span>
+    <h1 class="hero-name">
+      Akshay<br>
+      <em>Drives Growth.</em>
+    </h1>
+    <p class="hero-desc">
+      I help businesses grow through data-driven SEO, high-converting paid ad campaigns, and social media strategies that build real audiences. From real estate to F&amp;B to industrial brands.
+    </p>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <span class="stat-num" data-count="556000" data-prefix="₹" data-suffix="+">₹5.5L+</span>
+        <span class="stat-label">Ad Spend Managed</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">5L+</span>
+        <span class="stat-label">Reach Generated</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">5+</span>
+        <span class="stat-label">Brands Grown</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">80K+</span>
+        <span class="stat-label">Organic Reach (Café)</span>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    Scroll
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-inner">
+    <p class="section-label reveal">What I Do</p>
+    <h2 class="section-title reveal">Full-stack digital<br>marketing services</h2>
+    <p class="section-sub reveal">From organic search to paid campaigns and content — I handle the complete digital presence.</p>
+
+    <div class="skills-grid">
+      <div class="skill-card reveal">
+        <div class="skill-icon">🔍</div>
+        <div class="skill-name">Search Engine Optimisation</div>
+        <p class="skill-desc">Technical SEO, on-page optimisation, keyword strategy, and content planning for competitive niches.</p>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">📣</div>
+        <div class="skill-name">Meta Ads (Facebook & Instagram)</div>
+        <p class="skill-desc">Lead generation campaigns, audience targeting, Instant Forms, and conversion-focused ad creative.</p>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">🎯</div>
+        <div class="skill-name">Google Ads</div>
+        <p class="skill-desc">Search, display, and performance campaigns with strong ROAS focus across real estate and e-commerce.</p>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">📱</div>
+        <div class="skill-name">Social Media Marketing</div>
+        <p class="skill-desc">Page management, organic growth strategy, content creation, scheduling, and engagement across platforms.</p>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">✍️</div>
+        <div class="skill-name">Content & Ad Copywriting</div>
+        <p class="skill-desc">Ad hooks, primary text, captions, and poster copy crafted to stop the scroll and drive action.</p>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">📊</div>
+        <div class="skill-name">Analytics & Reporting</div>
+        <p class="skill-desc">Campaign performance tracking, keyword ranking analysis, and data-driven optimisation decisions.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- SEO -->
+<section id="seo">
+  <div class="section-inner">
+    <p class="section-label reveal">Case Studies</p>
+    <h2 class="section-title reveal">SEO — Ranking Brands<br>in Competitive Niches</h2>
+    <p class="section-sub reveal">Technical SEO, keyword strategy, and on-page optimisation across real estate, industrial, and creative sectors.</p>
+
+    <div class="cases-grid">
+
+      <div class="case-card reveal">
+        <div class="case-number">01</div>
+        <div class="case-client">Queens Habitats</div>
+        <div class="case-url">Real Estate · Calicut, Kerala</div>
+        <div class="case-row">
+          <span class="tag">SEO Optimisation</span>
+          <span class="tag">Keyword Strategy</span>
+          <span class="tag">Content</span>
+        </div>
+        <p style="font-size:0.87rem; color:var(--muted); line-height:1.7">
+          New, low-authority website in the highly competitive Kerala real estate market. Worked on keyword focus, on-page SEO, and page improvements to build search visibility from the ground up.
+        </p>
+        <div class="case-result">🚀 Increased organic visibility in local search — generating qualified leads.</div>
+      </div>
+
+      <div class="case-card reveal">
+        <div class="case-number">02</div>
+        <div class="case-client">Arabian Gratings</div>
+        <div class="case-url">Industrial Manufacturing · GCC</div>
+        <div class="case-row">
+          <span class="tag">On-page SEO</span>
+          <span class="tag">Content Optimisation</span>
+        </div>
+        <p style="font-size:0.87rem; color:var(--muted); line-height:1.7">
+          Industrial brand with near-zero initial search presence. Targeted high-intent industrial keywords with on-page SEO and structured content improvements.
+        </p>
+        <div class="case-result">🚀 Ranked in Top 10 for core target keywords.</div>
+      </div>
+
+      <div class="case-card reveal">
+        <div class="case-number">03</div>
+        <div class="case-client">Merac International</div>
+        <div class="case-url">meracinternational.com</div>
+        <div class="case-row">
+          <span class="tag">Technical SEO</span>
+          <span class="tag">Keyword Strategy</span>
+        </div>
+        <p style="font-size:0.87rem; color:var(--muted); line-height:1.7">
+          Competitive business niche requiring both technical fixes and a strong keyword architecture. Improved crawlability and relevance signals to lift organic ranking.
+        </p>
+        <div class="case-result">🚀 Improved keyword rankings and organic traffic growth.</div>
+      </div>
+
+      <div class="case-card reveal">
+        <div class="case-number">04</div>
+        <div class="case-client">Water Creative Studio</div>
+        <div class="case-url">watercreativestudio.com · Branding Agency</div>
+        <div class="case-row">
+          <span class="tag">On-page SEO</span>
+          <span class="tag">Content Improvements</span>
+        </div>
+        <p style="font-size:0.87rem; color:var(--muted); line-height:1.7">
+          Highly competitive creative and branding keywords. Structured content improvements and targeted on-page work to improve rank against established competitors.
+        </p>
+        <div class="case-result">🚀 Top ranking improvements for creative/branding keywords.</div>
+      </div>
+
+      <div class="case-card reveal">
+        <div class="case-number">05</div>
+        <div class="case-client">Futoria</div>
+        <div class="case-url">E-commerce / Business</div>
+        <div class="case-row">
+          <span class="tag">SEO Structure</span>
+          <span class="tag">Content Updates</span>
+        </div>
+        <p style="font-size:0.87rem; color:var(--muted); line-height:1.7">
+          Low initial search visibility with poor SEO structure. Rebuilt page architecture and updated content for improved relevance and indexation.
+        </p>
+        <div class="case-result">🚀 Better Google rankings and improved organic presence.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- META ADS -->
+<section id="ads" class="ads-section">
+  <div class="section-inner">
+    <p class="section-label reveal">Paid Advertising</p>
+    <h2 class="section-title reveal">Meta Ads — Campaigns<br>Built for Results</h2>
+    <p class="section-sub reveal">From ₹1.2K awareness campaigns to ₹78K lead generation pushes — structured around objectives, not just impressions.</p>
+
+    <div class="ads-overview reveal">
+      <div class="overview-stat">
+        <span class="overview-num">₹5.56L+</span>
+        <span class="overview-label">Total Ad Spend Managed</span>
+      </div>
+      <div class="overview-stat">
+        <span class="overview-num">5L+</span>
+        <span class="overview-label">Total Reach Generated</span>
+      </div>
+      <div class="overview-stat">
+        <span class="overview-num">25K+</span>
+        <span class="overview-label">Total Clicks & Traffic</span>
+      </div>
+      <div class="overview-stat">
+        <span class="overview-num">1,000+</span>
+        <span class="overview-label">Total Leads Generated</span>
+      </div>
+    </div>
+
+    <div class="campaigns-grid">
+
+      <div class="campaign-card reveal">
+        <p class="campaign-obj">Traffic Campaign</p>
+        <h3 class="campaign-title">High Performance Traffic Drive</h3>
+        <div class="campaign-metrics">
+          <div class="metric-row">
+            <span class="metric-key">Ad Spend</span>
+            <span class="metric-val">₹7,049</span>
+          </div>
+          <div class="metric-row">
+            <span class="metric-key">Link Clicks</span>
+            <span class="metric-val gold">23,513</span>
+          </div>
+          <div class="metric-row">
+            <span class="metric-key">Cost Per Click</span>
+            <span class="metric-val gold">₹0.29</span>
+          </div>
+          <div class="metric-row">
+            <span class="metric-key">Reach</span>
+            <span class="metric-val">372,442</span>
+          </div>
+          <div class="metric-row">
+            <span class="metric-key">Impressions</span>
+            <span class="metric-val">596,158</span>
+          </div>
+        </div>
+        <div class="campaign-insight">Extremely low CPC with massive traffic volume</div>
+      </div>
+
+      <div class="campaign-card reveal">
+        <p class="campaign-obj">Lead Generation</p>
+        <h3 class="campaign-title">High Conversion Lead Campaign</h3>
+        <div class="campaign-metrics">
+          <div class="metric-row">
+            <span class="metric-key">Ad Spend</span>
+            <span class="metric-val">₹7,074</span>
+          </div>
+          <div class="metric-row">
+            <span class="metric-key">Leads Generated</span>
+            <span class="metric-val gold">565</span>
+          </div>
+          <div class="metric-row">
+            <span class="metric-key">Cost Per Lead</span>
+            <span class="metric-val gold">₹12.50</span>
+          </div>
+          <div class="metric-row">
+            <span class="metric-key">Reach</span>
+            <span class="metric-val">78,290</span>
+          </div>
+          <div class="metric-row">
+            <span class="metric-key">Clicks</span>
+            <span class="metric-val">1,779</span>
+          </div>
+        </div>
+        <div class="campaign-insight">Extremely low cost per lead — high conversion efficiency</div>
+      </div>
+
+      <div class="campaign-card reveal">
+        <p class="campaign-obj">Lead Generation · Large Scale</p>
+        <h3 class="campaign-title">Large Scale Lead Generation</h3>
+        <div class="campaign-metrics">
+          <div class="metric-row">
+            <span class="metric-key">Ad Spend</span>
+            <span class="metric-val">₹78,599</span>
+          </div>
+          <div class="metric-row">
+            <span class="metric-key">Leads Generated</span>
+            <span class="metric-val gold">474</span>
+          </div>
+          <div class="metric-row">
+            <span class="metric-key">Cost Per Lead</span>
+            <span class="metric-val">₹165</span>
+          </div>
+          <div class="metric-row">
+            <span class="metric-key">Reach</span>
+            <span class="metric-val">108,884</span>
+          </div>
+          <div class="metric-row">
+            <span class="metric-key">Clicks</span>
+            <span class="metric-val">3,087</span>
+          </div>
+        </div>
+        <div class="campaign-insight">High volume lead generation with stable, predictable cost</div>
+      </div>
+
+      <div class="campaign-card reveal">
+        <p class="campaign-obj">Awareness / Reach</p>
+        <h3 class="campaign-title">Massive Reach at Minimal Spend</h3>
+        <div class="campaign-metrics">
+          <div class="metric-row">
+            <span class="metric-key">Ad Spend</span>
+            <span class="metric-val">₹1,242</span>
+          </div>
+          <div class="metric-row">
+            <span class="metric-key">Total Reach</span>
+            <span class="metric-val gold">559,360</span>
+          </div>
+          <div class="metric-row">
+            <span class="metric-key">CPM</span>
+            <span class="metric-val gold">Very Low</span>
+          </div>
+        </div>
+        <div class="campaign-insight">559K+ reach at only ₹1,242 — exceptional efficiency</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- SMM -->
+<section id="smm">
+  <div class="section-inner">
+    <p class="section-label reveal">Social Media Marketing</p>
+    <h2 class="section-title reveal">Organic Growth That<br>Drives Real Results</h2>
+
+    <div class="smm-showcase">
+      <div class="smm-info reveal">
+        <div class="smm-client">Bistrot Café Freo</div>
+        <div class="smm-location">📍 Fremantle, Australia</div>
+        <p class="smm-desc">
+          Built the brand's entire social media presence from scratch. Handled strategy, content creation, photography, video editing, and community management — growing a loyal local audience in under 2 months.
+        </p>
+        <div class="smm-tasks">
+          <div class="task-item">Created and managed Facebook & Instagram pages</div>
+          <div class="task-item">Shot and edited photos & videos for the café</div>
+          <div class="task-item">Built organic growth strategy with consistent posting</div>
+          <div class="task-item">Engaged with audience and local community</div>
+          <div class="task-item">Drove real foot traffic and brand awareness</div>
+        </div>
+        <div class="case-row">
+          <span class="tag gold">Organic Growth</span>
+          <span class="tag">Content Creation</span>
+          <span class="tag">Photography</span>
+          <span class="tag">Video Editing</span>
+        </div>
+      </div>
+
+      <div class="smm-stats reveal">
+        <div class="smm-stat">
+          <span class="smm-stat-num">+600</span>
+          <span class="smm-stat-label">New Followers</span>
+          <div class="smm-stat-platform" style="color:var(--muted);font-size:0.75rem;margin-top:4px">Facebook · 2 Months</div>
+        </div>
+        <div class="smm-stat">
+          <span class="smm-stat-num">+700</span>
+          <span class="smm-stat-label">New Followers</span>
+          <div class="smm-stat-platform" style="color:var(--muted);font-size:0.75rem;margin-top:4px">Instagram · 2 Months</div>
+        </div>
+        <div class="smm-stat" style="grid-column: span 2;">
+          <span class="smm-stat-num" style="font-size:2.5rem">2K → 80K+</span>
+          <span class="smm-stat-label">Organic Reach Growth · 100% Real Audience</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="contact-inner">
+      <div class="reveal">
+        <p class="section-label">Let's Work Together</p>
+        <h2 class="contact-cta">Ready to grow<br>your brand <em>online?</em></h2>
+        <p class="contact-body">
+          Whether you need SEO, paid ad campaigns, or a full social media strategy — I'm available for agency roles and freelance projects. Based in Calicut, working with brands across India and internationally.
+        </p>
+      </div>
+      <div class="contact-links reveal">
+        <a href="mailto:akshaymarketer@email.com" class="contact-link">
+          <div class="contact-link-icon">✉️</div>
+          <div class="contact-link-text">
+            <div class="contact-link-label">Email</div>
+            <div class="contact-link-val">akshaymarketer@email.com</div>
+          </div>
+        </a>
+        <a href="https://wa.me/91XXXXXXXXXX" class="contact-link">
+          <div class="contact-link-icon">💬</div>
+          <div class="contact-link-text">
+            <div class="contact-link-label">WhatsApp / Phone</div>
+            <div class="contact-link-val">+91 XXXXX XXXXX</div>
+          </div>
+        </a>
+        <a href="https://www.linkedin.com/in/akshay" class="contact-link">
+          <div class="contact-link-icon">🔗</div>
+          <div class="contact-link-text">
+            <div class="contact-link-label">LinkedIn</div>
+            <div class="contact-link-val">linkedin.com/in/akshay</div>
+          </div>
+        </a>
+        <a href="https://sites.google.com/view/akshcreatives" class="contact-link">
+          <div class="contact-link-icon">🌐</div>
+          <div class="contact-link-text">
+            <div class="contact-link-label">Portfolio Site</div>
+            <div class="contact-link-val">akshcreatives · Google Sites</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2025 Akshay · Digital Marketer · Calicut</span>
+  <span>SEO · Meta Ads · Google Ads · Social Media</span>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+        }, (entry.target.dataset.delay || 0));
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal').forEach((el, i) => {
+    el.dataset.delay = (i % 4) * 80;
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
